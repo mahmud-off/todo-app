@@ -18,6 +18,18 @@ import (
 	"github.com/spf13/viper"
 )
 
+// @title			CRUD-REST TodoList
+// @version		1.0
+// @description	This is a sample Web todo list.
+// @termsOfService	http://swagger.io/terms/
+// @contact.name	API Support
+// @contact.url	https://t.me/vmkdWW
+// @contact.email	o.mahmudowvadim2020@ya.ru
+// @license.name	Apache 2.0
+// @license.url	http://www.apache.org/licenses/LICENSE-2.0.html
+// @host			localhost:8080
+// @BasePath		/swagger/api/v1
+// @securityDefinitions.basic  BasicAuth
 func main() {
 
 	logrus.SetFormatter(new(logrus.JSONFormatter))

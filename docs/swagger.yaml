@@ -1,0 +1,448 @@
+basePath: /swagger/api/v1
+definitions:
+  handler.errorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  handler.getAllListsResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/todo.TodoList'
+        type: array
+    type: object
+  handler.statusResponse:
+    properties:
+      status:
+        type: string
+    type: object
+  todo.TodoItem:
+    properties:
+      description:
+        type: string
+      done:
+        type: boolean
+      id:
+        type: integer
+      title:
+        type: string
+    required:
+    - title
+    type: object
+  todo.TodoList:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      title:
+        type: string
+    required:
+    - title
+    type: object
+  todo.User:
+    properties:
+      name:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - name
+    - password
+    - username
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: o.mahmudowvadim2020@ya.ru
+    name: API Support
+    url: https://t.me/vmkdWW
+  description: This is a sample Web todo list.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: CRUD-REST TodoList
+  version: "1.0"
+paths:
+  /api/lists/:
+    get:
+      consumes:
+      - application/json
+      description: getting all lists
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.getAllListsResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      security:
+      - OAuth2 password auth: []
+      summary: Get All Lists
+      tags:
+      - list
+    post:
+      consumes:
+      - application/json
+      description: Creating new list
+      parameters:
+      - description: List title
+        in: path
+        name: title
+        required: true
+        type: string
+      - description: List description
+        in: path
+        name: description
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      security:
+      - '@securitydefinitions.oauth2.password OAuth2Password': []
+      summary: Create List
+      tags:
+      - list
+  /api/lists/:id:
+    delete:
+      consumes:
+      - application/json
+      description: deletting list using id
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.statusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      security:
+      - OAuth2 password auth: []
+      summary: Delete List
+      tags:
+      - list
+    get:
+      consumes:
+      - application/json
+      description: getting list using id
+      parameters:
+      - description: list Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/todo.TodoList'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      security:
+      - OAuth2 password auth: []
+      summary: Get List By Id
+      tags:
+      - list
+    put:
+      consumes:
+      - application/json
+      description: updating list info
+      parameters:
+      - description: List title
+        in: path
+        name: title
+        type: string
+      - description: List description
+        in: path
+        name: description
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.statusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      security:
+      - OAuth2 password auth: []
+      summary: Update List
+      tags:
+      - list
+  /api/lists/:id/items:
+    get:
+      consumes:
+      - application/json
+      description: getting all items
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/todo.TodoItem'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - OAuth2 password auth: []
+      summary: Get All Items
+      tags:
+      - item
+    post:
+      consumes:
+      - application/json
+      description: Creating new item
+      parameters:
+      - description: List title
+        in: path
+        name: title
+        required: true
+        type: string
+      - description: List description
+        in: path
+        name: description
+        type: string
+      - description: flag that task done
+        in: path
+        name: done
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - OAuth2 password auth: []
+      summary: Create Item
+      tags:
+      - item
+  /api/lists/:id/items/:id:
+    delete:
+      consumes:
+      - application/json
+      description: deletting item using id
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.statusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - OAuth2 password auth: []
+      summary: Delete Item
+      tags:
+      - item
+    get:
+      consumes:
+      - application/json
+      description: getting Item using id
+      parameters:
+      - description: item Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/todo.TodoItem'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - OAuth2 password auth: []
+      summary: Get Item By Id
+      tags:
+      - item
+    put:
+      consumes:
+      - application/json
+      description: updating item info
+      parameters:
+      - description: Item title
+        in: path
+        name: title
+        type: string
+      - description: Item description
+        in: path
+        name: description
+        type: string
+      - description: flag that task done
+        in: path
+        name: done
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.statusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - OAuth2 password auth: []
+      summary: Update Item
+      tags:
+      - item
+  /auth/sign-in:
+    post:
+      consumes:
+      - application/json
+      description: Authorization
+      parameters:
+      - description: Account user_name
+        in: path
+        name: user_name
+        required: true
+        type: string
+      - description: Account password
+        in: path
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Sign In
+      tags:
+      - auth
+  /auth/sign-up:
+    post:
+      consumes:
+      - application/json
+      description: Creating new user
+      parameters:
+      - description: Account name
+        in: path
+        name: name
+        required: true
+        type: string
+      - description: Account user_name
+        in: path
+        name: user_name
+        required: true
+        type: string
+      - description: Account password
+        in: path
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/todo.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Sign Up
+      tags:
+      - auth
+securityDefinitions:
+  BasicAuth:
+    type: basic
+swagger: "2.0"
